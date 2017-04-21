@@ -1,14 +1,19 @@
 {
   "name": "Attainment Chrome",
   "description": "Extention for adding tasks to attainment",
-  "version": "0.1",
+  "version": "0.2",
   "content_scripts": [
     {
       "matches": [
         "https://mail.google.com/*",
         "https://inbox.google.com/*"
       ],
-      "js": ["inboxsdk.js","attainment.js","mousetrap.min.js"],
+      "js": [
+        "inboxsdk.js",
+        "mousetrap.min.js",
+        "firebase.js",
+        "attainment.js"
+      ],
       "run_at": "document_end"
     }
   ],

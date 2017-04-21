@@ -45,9 +45,21 @@ function sendToAttainment(thread) {
 
 }
 
-        
+function initFirebase() {
+    var config = {
+        apiKey: "AIzaSyDs8E_p1Uyiq9mLcBC6G__Kdzu3ggkgt9I",
+        authDomain: "attainment-6017d.firebaseapp.com",
+        databaseURL: "https://attainment-6017d.firebaseio.com",
+        projectId: "attainment-6017d",
+        storageBucket: "attainment-6017d.appspot.com",
+        messagingSenderId: "1096403605650"
+    };
+    firebase.initializeApp(config);
+} 
 
-InboxSDK.load('2', 'sdk_attainment_defe48b608').then(function(sdk){
+function handleAuth(user) {
+  InboxSDK.load('2', 'sdk_attainment_defe48b608').then(function(sdk){
+
     var currThread = null;
     // register our thread handler
     sdk.Conversations.registerThreadViewHandler(function(threadView){
@@ -58,4 +70,25 @@ InboxSDK.load('2', 'sdk_attainment_defe48b608').then(function(sdk){
     Mousetrap.bind('; f', function() { createFinderModal(sdk); });
     Mousetrap.bind('; t', function() { sendToAttainment(currThread); currThread = null; });
 
-});
+  });
+}
+
+function handleAuthError(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // The email of the user's account used.
+  var email = error.email;
+  // The firebase.auth.AuthCredential type that was used.
+  var credential = error.credential;
+
+  console.log("ERROR: " + errorCode);
+  console.log("ERROR MSG: " + errorMessage);
+}
+
+
+initFirebase();
+firebase.auth().signInWithEmailAndPassword("email@address.com", "password")
+    .then(handleAuth)
+    .catch(handleAuthError);
+
