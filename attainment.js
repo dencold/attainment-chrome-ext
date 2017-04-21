@@ -1,3 +1,5 @@
+var inboxId = "-KihIWrN5C8w5RNLV5g4";
+
 function openThreadView(sdk, id) {
     if (id) {
         sdk.Router.goto(sdk.Router.NativeRouteIDs.THREAD, {threadID: id});
@@ -33,14 +35,26 @@ function createFinderModal(sdk) {
 }
 
 function sendToAttainment(thread) {
-   
+    // get our current user 
+    var user = firebase.auth().currentUser;
+    if (!user) {
+        console.log("User not logged in");
+        return;
+    }
+
     if (thread != null) {
         var json = {
-            subject: thread.getSubject(),
-            threadId: thread.getThreadID()
-        }
+            name: thread.getSubject(),
+            gmailThreadId: thread.getThreadID()
+        };
 
-        console.log(json);
+        console.log("Sending to Attainment: " + json);
+        var inboxRef = firebase.database().ref("/users/"
+                                + user.uid
+                                + "/projects/"
+                                + inboxId
+                                + "/tasks");
+        inboxRef.push(json);
     }
 
 }
@@ -86,9 +100,8 @@ function handleAuthError(error) {
   console.log("ERROR MSG: " + errorMessage);
 }
 
-
 initFirebase();
-firebase.auth().signInWithEmailAndPassword("email@address.com", "password")
+firebase.auth().signInWithEmailAndPassword("", "")
     .then(handleAuth)
     .catch(handleAuthError);
 

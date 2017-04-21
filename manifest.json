@@ -1,7 +1,7 @@
 {
   "name": "Attainment Chrome",
   "description": "Extention for adding tasks to attainment",
-  "version": "0.2",
+  "version": "0.3",
   "content_scripts": [
     {
       "matches": [
